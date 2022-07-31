@@ -1,14 +1,14 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import Home from "./views/Home";
-import Motor from "./views/Motor";
+import Photo from "./views/Photo";
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="motor" element={<Motor />} />
+        <Route path="photo" element={<Photo />} />
       </Routes>
     </BrowserRouter>
   );
