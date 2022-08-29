@@ -3,9 +3,11 @@ import { useQuery } from "@tanstack/react-query";
 import HomePresenter from "./HomePresenter";
 
 const HomeContainer = () => {
-  const query = useQuery(["photos"], () => getPhotos({ category: "TODEST" }));
+  const { data } = useQuery(["photos"], () =>
+    getPhotos({ category: "TODEST" })
+  );
 
-  if (query) console.log(query);
+  if (data) console.log(data);
 
   return <HomePresenter />;
 };
