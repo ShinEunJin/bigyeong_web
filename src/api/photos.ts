@@ -1,11 +1,20 @@
+import api from "./api";
 import routes from "./routes";
-import { attachParams, ParamsType } from "./utils";
 
-interface getPhotosParams extends ParamsType {
+interface GetPhotosReqParams {
   category: "TODEST" | "TORIDE";
 }
 
-export const getPhotos = async (params: getPhotosParams) => {
-  const res = await fetch(attachParams(routes.photos, params));
-  return await res.json();
+export interface GetPhotosData {
+  title: string;
+  location: string;
+  detailLocation: string;
+  description: string;
+  imageUri: string;
+}
+
+export const getPhotos = (
+  params: GetPhotosReqParams
+): Promise<GetPhotosData[]> => {
+  return api({ url: routes.photos, method: "get", params });
 };
