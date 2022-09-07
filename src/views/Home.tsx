@@ -1,16 +1,39 @@
 import { getBikes } from "@/api/bikes";
 import { useQuery } from "@tanstack/react-query";
+import { EventHandler, useState } from "react";
 
 const Home = () => {
-  const { data, isLoading, isError, error } = useQuery(["getBikes"], () =>
-    getBikes({ model: "" })
+  const [maker, setMaker] = useState("");
+
+  const { data, isLoading, refetch } = useQuery(
+    ["getBikes"],
+    () => getBikes({ maker }),
+    { enabled: false, refetchOnWindowFocus: false }
   );
 
-  if (isError) console.log(error);
-  console.log(data);
+  const onClickHandler = (maker: any) => {
+    setMaker(maker);
+    setTimeout(() => {
+      refetch();
+    }, 0);
+  };
+
+  const Button = () => {
+    const maker = ["YAMAHA", "KAWASAKI", "SUZUKI", "HONDA", "BMW"];
+    return (
+      <>
+        {maker.map((v, i) => (
+          <button key={i} onClick={() => onClickHandler(v)}>
+            {v}
+          </button>
+        ))}
+      </>
+    );
+  };
 
   return (
     <>
+      <Button />
       {isLoading ? (
         <div>loading</div>
       ) : (
