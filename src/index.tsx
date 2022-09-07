@@ -7,8 +7,6 @@ import App from "./App";
 
 const queryClient = new QueryClient();
 
-queryClient.removeQueries(["getPhotos"], { exact: true });
-
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );

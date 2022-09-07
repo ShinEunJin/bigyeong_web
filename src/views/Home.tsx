@@ -1,10 +1,13 @@
-import { getPhotos } from "@/api/photos";
+import { getBikes } from "@/api/bikes";
 import { useQuery } from "@tanstack/react-query";
 
 const Home = () => {
-  const { data, isLoading } = useQuery(["getPhotos"], () =>
-    getPhotos({ category: "TODEST" })
+  const { data, isLoading, isError, error } = useQuery(["getBikes"], () =>
+    getBikes({ model: "" })
   );
+
+  if (isError) console.log(error);
+  console.log(data);
 
   return (
     <>
@@ -13,10 +16,15 @@ const Home = () => {
       ) : (
         data?.map((v, i) => (
           <img
-            src={v.imageUri}
+            src={v.image}
             alt="sorry"
             key={i}
-            style={{ height: 300, width: 300 }}
+            style={{
+              height: 500,
+              width: 500,
+              objectFit: "contain",
+              objectPosition: "center",
+            }}
           />
         ))
       )}

@@ -1,7 +1,7 @@
-const PHOTOS = "/api/v1/photos";
+const BIKES = "/api/v1/bikes";
 
 let routes = {
-  photos: PHOTOS,
+  bikes: BIKES,
 };
 
 export default routes;
