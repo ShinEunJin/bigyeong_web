@@ -1,6 +1,6 @@
 import { getBikes } from "@/api/bikes";
 import { useQuery } from "@tanstack/react-query";
-import { EventHandler, useState } from "react";
+import { useEffect, useState } from "react";
 
 const Home = () => {
   const [maker, setMaker] = useState("");
@@ -11,12 +11,17 @@ const Home = () => {
     { enabled: false, refetchOnWindowFocus: false }
   );
 
-  const onClickHandler = (maker: any) => {
-    setMaker(maker);
+  const onClickHandler = (item: any) => {
+    if (maker === item) setMaker("");
+    else setMaker(item);
     setTimeout(() => {
       refetch();
     }, 0);
   };
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
   const Button = () => {
     const maker = ["YAMAHA", "KAWASAKI", "SUZUKI", "HONDA", "BMW"];
@@ -43,8 +48,8 @@ const Home = () => {
             alt="sorry"
             key={i}
             style={{
-              height: 500,
-              width: 500,
+              height: 400,
+              width: 400,
               objectFit: "contain",
               objectPosition: "center",
             }}
