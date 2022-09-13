@@ -1,6 +1,10 @@
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+
+import useScroll from "@/hooks/useScroll";
 import FirstSection from "./FirstSection";
 import SecondSection from "./SecondSection";
+import ThirdSection from "./ThirdSection";
 
 const Main = styled.main`
   width: 75%;
@@ -16,6 +20,7 @@ const Header = styled.header`
   position: fixed;
   background-color: #fff;
   padding: 0 2rem;
+  z-index: 5;
 `;
 
 const LeftHeader = styled.div`
@@ -41,6 +46,26 @@ const RightHeader = styled.div`
 `;
 
 const Home = () => {
+  const scroll = useScroll();
+
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  const [activeSection, setActiveSection] = useState(0);
+
+  useEffect(() => {
+    if (sectionRef.current) {
+      const count = sectionRef.current.childElementCount;
+      const { height } = sectionRef.current.getBoundingClientRect();
+      for (let i = 0; i < count; i++) {
+        if (scroll <= height / count / 2 + (height / count) * i - 150) {
+          console.log(i);
+          setActiveSection(i);
+          break;
+        }
+      }
+    }
+  }, [scroll]);
+
   return (
     <Main>
       <Header>
@@ -54,8 +79,11 @@ const Home = () => {
           <span>Touring</span>
         </RightHeader>
       </Header>
-      <FirstSection />
-      <SecondSection />
+      <div ref={sectionRef}>
+        <FirstSection active={activeSection === 0} />
+        <SecondSection active={activeSection === 1} />
+        <ThirdSection active={activeSection === 2} />
+      </div>
     </Main>
   );
 };
