@@ -16,16 +16,16 @@ const MainText = styled.div`
 
 const DragAnimation = keyframes`
   0% {
-    opacity: 0.15;
+    opacity: 0;
     transform: translateY(0px);
   }
-  50% {
+  80% {
     opacity: 0.25;
     transform: translateY(20px);
   }
   100% {
-    opacity: 0.15;
-    transform: translateY(0px);
+    opacity: 0;
+    transform: translateY(15px);
   }
 `;
 
@@ -33,7 +33,7 @@ const DragImg = styled.img`
   width: 3em;
   height: 3em;
   position: absolute;
-  bottom: 6em;
+  bottom: 8em;
   animation: ${DragAnimation} 2s infinite;
 `;
 

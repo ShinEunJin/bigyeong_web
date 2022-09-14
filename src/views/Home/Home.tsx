@@ -47,7 +47,6 @@ const RightHeader = styled.div`
 
 const Home = () => {
   const scroll = useScroll();
-
   const sectionRef = useRef<HTMLDivElement>(null);
 
   const [activeSection, setActiveSection] = useState(0);
@@ -58,7 +57,6 @@ const Home = () => {
       const { height } = sectionRef.current.getBoundingClientRect();
       for (let i = 0; i < count; i++) {
         if (scroll <= height / count / 2 + (height / count) * i - 150) {
-          console.log(i);
           setActiveSection(i);
           break;
         }
