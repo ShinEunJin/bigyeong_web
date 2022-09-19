@@ -1,3 +1,4 @@
+import useMountTransition from "@/hooks/useMountTransition";
 import styled, { keyframes } from "styled-components";
 
 const Container = styled.section`
@@ -14,27 +15,30 @@ const MainText = styled.div`
   line-height: 1.5em;
 `;
 
-const DragAnimation = keyframes`
+const DragAnimation = (mount: boolean) => keyframes`
   0% {
-    opacity: 0;
     transform: translateY(0px);
   }
-  80% {
-    opacity: 0.25;
+  50% {
     transform: translateY(20px);
   }
   100% {
-    opacity: 0;
-    transform: translateY(15px);
+    transform: translateY(0px);
+    opacity: ${!mount && 0};
   }
 `;
 
-const DragImg = styled.img`
+interface DragImgProps {
+  mount: boolean;
+}
+
+const DragImg = styled.img<DragImgProps>`
+  opacity: 0.3;
   width: 3em;
   height: 3em;
   position: absolute;
   bottom: 8em;
-  animation: ${DragAnimation} 2s infinite;
+  animation: ${(props) => DragAnimation(props.mount)} 2s infinite;
 `;
 
 interface FirstSectionProps {
@@ -42,6 +46,8 @@ interface FirstSectionProps {
 }
 
 const FirstSection = (props: FirstSectionProps) => {
+  const imgTransition = useMountTransition(props.active, 2000);
+
   return (
     <Container>
       <MainText>
@@ -49,8 +55,11 @@ const FirstSection = (props: FirstSectionProps) => {
         <br />
         With My Bike
       </MainText>
-      {props.active && (
-        <DragImg src={require("@/assets/images/home/drag.png")} />
+      {imgTransition && (
+        <DragImg
+          mount={props.active}
+          src={require("@/assets/images/home/drag.png")}
+        />
       )}
     </Container>
   );
