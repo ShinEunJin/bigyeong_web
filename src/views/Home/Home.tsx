@@ -7,20 +7,23 @@ import SecondSection from "./SecondSection";
 import ThirdSection from "./ThirdSection";
 
 const Main = styled.main`
-  width: 75%;
+  width: 70%;
   margin: 0 auto;
+  position: relative;
 `;
 
 const Header = styled.header`
-  width: 75%;
+  width: 100%;
   height: 60px;
+  padding: 0 15%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: fixed;
+  left: 0;
   background-color: #fff;
-  padding: 0 2rem;
   z-index: 5;
+  border-bottom: 0.3px solid #e1e1e1;
 `;
 
 const LeftHeader = styled.div`
@@ -45,6 +48,12 @@ const RightHeader = styled.div`
   }
 `;
 
+const Img = styled.img`
+  position: absolute;
+  top: 10%;
+  left: 10%;
+`;
+
 const Home = () => {
   const scroll = useScroll();
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -56,13 +65,16 @@ const Home = () => {
       const count = sectionRef.current.childElementCount;
       const { height } = sectionRef.current.getBoundingClientRect();
       for (let i = 0; i < count; i++) {
-        if (scroll <= height / count / 2 + (height / count) * i - 150) {
+        if (scroll <= height / count / 2 + (height / count) * i) {
           setActiveSection(i);
           break;
         }
       }
     }
   }, [scroll]);
+  useEffect(() => {
+    console.log(activeSection >= 1);
+  }, [activeSection]);
 
   return (
     <Main>
@@ -79,8 +91,8 @@ const Home = () => {
       </Header>
       <div ref={sectionRef}>
         <FirstSection active={activeSection === 0} />
-        <SecondSection active={activeSection === 1} />
-        <ThirdSection active={activeSection === 2} />
+        <SecondSection active={activeSection >= 1} />
+        <ThirdSection active={activeSection >= 2} />
       </div>
     </Main>
   );
