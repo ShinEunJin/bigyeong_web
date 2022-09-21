@@ -2,7 +2,7 @@ import { getBikes } from "@/api/bikes";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
-const Home = () => {
+const Bike = () => {
   const [maker, setMaker] = useState("");
 
   const { data, isLoading, refetch } = useQuery(
@@ -60,4 +60,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Bike;
