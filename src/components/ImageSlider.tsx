@@ -1,3 +1,4 @@
+import useInterval from "@/hooks/useInterval";
 import { useEffect, useRef, useState } from "react";
 import styled, { keyframes } from "styled-components";
 
@@ -20,8 +21,8 @@ const sliderAnimation = (
   0% {
     transform: translateX(${prevDistance}px);
   }
-  30% {
-    transform: translateX(${prevDistance}px);
+  25% {
+    transform: translateX(${distance}px);
   }
   100% {
     transform: translateX(${distance}px);
@@ -33,6 +34,7 @@ interface StyleSliderWrapperProps {
   numberOfImages: number;
   imageIdx: number;
   auto: boolean;
+  delayTime: number;
 }
 
 const SliderWrapper = styled.div<StyleSliderWrapperProps>`
@@ -44,8 +46,7 @@ const SliderWrapper = styled.div<StyleSliderWrapperProps>`
         -1 * props.width * props.imageIdx,
         -1 * props.width * (props.imageIdx + 1)
       )}
-    3s ${(props) => props.auto && "infinite"};
-  animation-delay: ${(props) => (props.auto ? 1000 : 0)};
+    ${(props) => `${props.delayTime}ms`} ${(props) => props.auto && "infinite"};
 `;
 
 interface ImageSliderProps {
@@ -53,6 +54,7 @@ interface ImageSliderProps {
   width: number;
   height: number;
   operation: "auto" | "hover";
+  delay: number;
 }
 
 const ImageSlider = (props: ImageSliderProps) => {
@@ -65,16 +67,9 @@ const ImageSlider = (props: ImageSliderProps) => {
     }
   };
 
-  const timeRef = useRef<NodeJS.Timer | null>(null);
-
-  useEffect(() => {
-    if (props.operation === "auto") {
-      timeRef.current = setInterval(() => {
-        // slide();
-      }, 3000);
-      return () => clearInterval(timeRef.current as NodeJS.Timer);
-    }
-  }, []);
+  useInterval(() => {
+    slide();
+  }, props.delay);
 
   return (
     <Container
@@ -87,8 +82,10 @@ const ImageSlider = (props: ImageSliderProps) => {
         numberOfImages={props.children.length}
         imageIdx={imageIdx}
         auto={props.operation === "auto"}
+        delayTime={props.delay}
       >
         {props.children}
+        {props.children[0]}
       </SliderWrapper>
     </Container>
   );
