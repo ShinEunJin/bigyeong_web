@@ -1,15 +1,28 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 
-const useScroll = () => {
+const useScroll = (throttlingDelay?: number) => {
   const [scrollPosition, setScrollPosition] = useState(0);
 
-  useEffect(() => {
-    const updatePosition = () => {
+  const throttling = useRef(false);
+
+  const updatePosition = useCallback(() => {
+    if (throttlingDelay) {
+      if (!throttling.current) {
+        setScrollPosition(window.scrollY);
+        throttling.current = true;
+        setTimeout(() => {
+          if (throttling.current) throttling.current = false;
+        }, throttlingDelay);
+      }
+    } else {
       setScrollPosition(window.scrollY);
-    };
+    }
+  }, [throttlingDelay]);
+
+  useEffect(() => {
     window.addEventListener("scroll", updatePosition);
     return () => window.removeEventListener("scroll", updatePosition);
-  }, []);
+  }, [updatePosition]);
 
   return scrollPosition;
 };
