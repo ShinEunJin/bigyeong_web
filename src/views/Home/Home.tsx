@@ -5,6 +5,7 @@ import useScroll from "@/hooks/useScroll";
 import FirstSection from "./FirstSection";
 import SecondSection from "./SecondSection";
 import ThirdSection from "./ThirdSection";
+import useGeolocation from "@/hooks/useGeolocation";
 
 const Main = styled.main`
   width: 70%;
@@ -13,10 +14,17 @@ const Main = styled.main`
 `;
 
 const Home = () => {
-  const scroll = useScroll();
+  const scroll = useScroll(200);
   const sectionRef = useRef<HTMLDivElement>(null);
 
   const [activeSection, setActiveSection] = useState(0);
+
+  const location = useGeolocation();
+
+  useEffect(() => {
+    console.log(location);
+    console.log("dif");
+  }, [location]);
 
   useEffect(() => {
     if (sectionRef.current) {
@@ -30,9 +38,6 @@ const Home = () => {
       }
     }
   }, [scroll]);
-  useEffect(() => {
-    console.log(activeSection >= 1);
-  }, [activeSection]);
 
   return (
     <Main>

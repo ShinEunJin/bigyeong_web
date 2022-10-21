@@ -1,4 +1,5 @@
 import useMountTransition from "@/hooks/useMountTransition";
+import { memo } from "react";
 import styled, { keyframes } from "styled-components";
 
 const Container = styled.section`
@@ -65,4 +66,4 @@ const FirstSection = (props: FirstSectionProps) => {
   );
 };
 
-export default FirstSection;
+export default memo(FirstSection);
