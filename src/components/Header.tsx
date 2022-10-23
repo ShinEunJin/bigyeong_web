@@ -1,3 +1,4 @@
+import routes from "@/routes/routes";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
@@ -47,9 +48,7 @@ const Header = () => {
         <span>Bigyeong Moto</span>
       </SLink>
       <RightHeader>
-        <span>Service</span>
-        <span>News</span>
-        <span>Touring</span>
+        <Link to={`${routes.upload}`}>Upload</Link>
       </RightHeader>
     </Container>
   );
