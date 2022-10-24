@@ -1,8 +1,9 @@
-import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
+import { ChangeEvent, Dispatch, SetStateAction } from "react";
 
 interface UploadFormProps {
   children: React.ReactNode;
-  setUploadSource?: Dispatch<SetStateAction<string | null>>;
+  setUploadSource: Dispatch<SetStateAction<string>>;
+  uploadSource: string;
 }
 
 const UploadForm = (props: UploadFormProps) => {
@@ -26,6 +27,12 @@ const UploadForm = (props: UploadFormProps) => {
         id="upload-image"
         type="file"
         onChange={handleUploadImage}
+        onClick={(e) => {
+          if (props.uploadSource) {
+            e.preventDefault();
+            props.setUploadSource("");
+          }
+        }}
       />
     </form>
   );
