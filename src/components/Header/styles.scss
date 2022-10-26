@@ -1,0 +1,35 @@
+.header {
+  width: 100vw;
+  height: 60px;
+  padding: 0 20vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  left: 0;
+  background-color: #fff;
+  z-index: 5;
+  border-bottom: 0.3px solid #e1e1e1;
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    img {
+      width: 30px;
+      height: 30px;
+      margin-right: 0.2em;
+    }
+    span {
+      font-weight: bold;
+      font-size: 1.2em;
+    }
+  }
+
+  .header-right {
+    font-size: 15px;
+    opacity: 0.7;
+    span {
+      margin-left: 3em;
+    }
+  }
+}

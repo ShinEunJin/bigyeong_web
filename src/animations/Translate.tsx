@@ -1,36 +1,38 @@
-import { Children, cloneElement, createElement } from "react";
-import styled, { keyframes } from "styled-components";
+import { cloneElement } from "react";
 
 type DistanceType = [number, number];
 
 interface TranslateProps {
   children: JSX.Element;
-  distance?: DistanceType;
+  distance: DistanceType;
+  time: number;
 }
 
 interface TranslateContainerProps {
-  distance?: DistanceType;
+  distance: DistanceType;
+  time: number;
 }
 
-const translate = (distance: DistanceType) => keyframes`
-    from {
-        transform: translate(0px, 0px);
-    } 
-    to {
-        transform: translate(${distance[0]}px, ${distance[1]}px);
-    }
-`;
-
-const TranslateContainer = styled.div<TranslateContainerProps>`
-  animation: ${(props) => translate(props.distance || [0, 0])} 0.5s ease-in-out
-    forwards;
-`;
-
 const Translate = (props: TranslateProps) => {
+  const Element = () => {
+    const el = cloneElement({
+      ...props.children,
+      props: {
+        ...props.children.props,
+        style: {
+          ...props.children.props.style,
+          transition: "all 0.5s ease-in-out",
+          transform: `translateY(-150px)`,
+        },
+      },
+    });
+    console.log(el);
+    return el;
+  };
   return (
-    <TranslateContainer distance={props.distance}>
-      {props.children}
-    </TranslateContainer>
+    // <TranslateContainer distance={props.distance} time={props.time}>
+    <Element />
+    // </TranslateContainer>
   );
 };
 
