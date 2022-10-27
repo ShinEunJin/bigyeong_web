@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { BsUpload } from "@react-icons/all-files/bs/BsUpload";
-import { IoMdCloseCircle } from "@react-icons/all-files/io/IoMdCloseCircle";
 import UploadForm from "@/components/UploadForm";
-import Translate from "@/animations/Translate";
+import Transform from "@/animations/Transform";
 import "./styles.scss";
 
 const Upload = () => {
@@ -12,38 +11,30 @@ const Upload = () => {
     <div className="upload">
       {!imgSrc && (
         <UploadForm setUploadSource={setImgSrc} uploadSource={imgSrc}>
-          <div className="upload-input-box">
+          <div className="upload-image-input-box">
             <BsUpload color="#b3b3b3" size={50} />
           </div>
         </UploadForm>
       )}
       {imgSrc && (
-        <>
-          <Translate
+        <div className="upload-input-container">
+          <Transform
             time={0.5}
-            distance={[0, -Math.floor(window.innerHeight * 0.08)]}
+            distance={[0, -Math.floor(window.innerHeight * 0.04)]}
           >
-            <div
-              className="hihi"
-              style={{ position: "relative", width: "400px" }}
-            >
-              <img
-                style={{
-                  width: "100%",
-                  objectPosition: "center",
-                  objectFit: "contain",
-                  borderRadius: "20px",
-                }}
-                src={imgSrc}
-              />
+            <div className="upload-image-box">
+              <img alt="" className="upload-image" src={imgSrc} />
             </div>
-            {/* <div className="upload-image-box">
-              <img className="upload-image" src={imgSrc} />
-              <IoMdCloseCircle className="IoMdCloseCircle" />
-            </div> */}
-          </Translate>
-          <input type="text" />
-        </>
+          </Transform>
+          <div className="upload-input-container__inputs">
+            <Transform time={0.5} distance={[-100, 0]} delay={100}>
+              <input className="upload-input upload-input__title" />
+            </Transform>
+            <Transform time={0.5} distance={[-100, 0]} delay={200}>
+              <input className="upload-input upload-input__location" />
+            </Transform>
+          </div>
+        </div>
       )}
     </div>
   );
