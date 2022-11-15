@@ -1,64 +1,71 @@
-import { cloneElement, createElement } from "react";
+import {
+  cloneElement,
+  createElement,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+} from "react";
 import { createPortal } from "react-dom";
 import { createAnimationClassName } from "@/animations/utils/className";
 
 type DistanceType = [number, number];
 
-interface TranslateProps {
+interface TransformProps {
   children: JSX.Element;
   distance: DistanceType;
   time: number;
   delay?: number;
 }
 
-const Translate = (props: TranslateProps) => {
-  const className = createAnimationClassName();
+const Transform = (props: TransformProps) => {
+  const styleClassName = useMemo(() => createAnimationClassName(), []);
 
-  const Styleani = () => {
-    let el = createElement(
-      "style",
-      null,
-      `
-        @keyframes ${className} { 
-          from { 
-            transform: translate(0px, 0px); 
-          } 
-          to { 
-            transform: translate(${props.distance[0]}px, ${
-        props.distance[1]
-      }px); 
-          } 
-        } 
-        .${className} { 
-          animation: ${className} ${props.time}s ease-in-out forwards;
-          ${props.delay && `animation-delay: ${props.delay}ms`}
-        } 
-      `
-    );
+  const StyleComponent = useCallback(() => {
+    const style = `
+@keyframes ${styleClassName} { 
+  from { 
+    transform: translate(0px, 0px); 
+  } 
+  to { 
+    transform: translate(${props.distance[0]}px, ${props.distance[1]}px); 
+  } 
+} 
 
-    const element = createPortal(el, document.head);
+.${styleClassName} { 
+  animation: ${styleClassName} ${props.time}ms ease-in-out forwards;
+  ${props.delay && `animation-delay: ${props.delay}ms`}
+} 
+    `;
 
-    return element;
-  };
+    const element = createElement("style", null, style.trim());
 
-  const Element = () => {
+    const styleComponent = createPortal(element, document.head);
+
+    return styleComponent;
+  }, []);
+
+  const ChildComponent = useCallback(() => {
     let element = cloneElement(props.children);
+    console.log("rerendering 111");
+    console.log(styleClassName);
     element = {
       ...element,
       props: {
         ...element.props,
-        className: `${element.props.className} ${className}`,
+        className: `${element.props.className} ${styleClassName}`,
       },
     };
+
     return element;
-  };
+  }, []);
 
   return (
     <>
-      <Styleani />
-      <Element />
+      <StyleComponent />
+      <ChildComponent />
     </>
   );
 };
 
-export default Translate;
+export default Transform;
