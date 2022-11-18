@@ -1,71 +1,21 @@
-import {
-  cloneElement,
-  createElement,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-} from "react";
-import { createPortal } from "react-dom";
-import { createAnimationClassName } from "@/animations/utils/className";
-
-type DistanceType = [number, number];
+import { cloneElement, useEffect, useState } from "react";
 
 interface TransformProps {
   children: JSX.Element;
-  distance: DistanceType;
+  x?: number;
+  y?: number;
   time: number;
   delay?: number;
 }
 
 const Transform = (props: TransformProps) => {
-  const styleClassName = useMemo(() => createAnimationClassName(), []);
+  const [style, setStyle] = useState({});
 
-  const StyleComponent = useCallback(() => {
-    const style = `
-@keyframes ${styleClassName} { 
-  from { 
-    transform: translate(0px, 0px); 
-  } 
-  to { 
-    transform: translate(${props.distance[0]}px, ${props.distance[1]}px); 
-  } 
-} 
+  useEffect(() => {
+    setStyle({ transform: `translateY(${props.y}px)`, transition: "all 0.5s" });
+  }, [props.children, props.x, props.y]);
 
-.${styleClassName} { 
-  animation: ${styleClassName} ${props.time}ms ease-in-out forwards;
-  ${props.delay && `animation-delay: ${props.delay}ms`}
-} 
-    `;
-
-    const element = createElement("style", null, style.trim());
-
-    const styleComponent = createPortal(element, document.head);
-
-    return styleComponent;
-  }, []);
-
-  const ChildComponent = useCallback(() => {
-    let element = cloneElement(props.children);
-    console.log("rerendering 111");
-    console.log(styleClassName);
-    element = {
-      ...element,
-      props: {
-        ...element.props,
-        className: `${element.props.className} ${styleClassName}`,
-      },
-    };
-
-    return element;
-  }, []);
-
-  return (
-    <>
-      <StyleComponent />
-      <ChildComponent />
-    </>
-  );
+  return <>{cloneElement(props.children, { style })}</>;
 };
 
 export default Transform;

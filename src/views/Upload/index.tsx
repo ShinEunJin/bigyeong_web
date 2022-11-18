@@ -2,8 +2,8 @@ import "./styles.scss";
 import React, { useCallback, useState } from "react";
 import { BsUpload } from "@react-icons/all-files/bs/BsUpload";
 import UploadForm from "@/components/UploadForm";
-import Transform from "@/animations/Transform";
 import { uploadPhoto } from "@/api/upload";
+import Transform from "@/animations/Transform";
 
 interface InputsType {
   title: string;
@@ -31,6 +31,8 @@ const Upload = () => {
     [inputs]
   );
 
+  const [move, setMove] = useState(-80);
+
   return (
     <div className="upload">
       {!imgSrc && (
@@ -47,10 +49,7 @@ const Upload = () => {
 
       {imgSrc && (
         <div className="upload-input-container">
-          <Transform
-            time={400}
-            distance={[0, -Math.floor(window.innerHeight * 0.06)]}
-          >
+          <Transform time={400} y={move}>
             <div className="upload-image-box">
               <img alt="" className="upload-image" src={imgSrc} />
             </div>
@@ -71,6 +70,12 @@ const Upload = () => {
           />
           <div className="upload-photo-btn" onClick={handleUploadPhoto}>
             <span>제출</span>
+          </div>
+          <div
+            className="upload-photo-btn"
+            onClick={() => setMove((prev) => (prev ? 0 : -80))}
+          >
+            <span>이동 테스트</span>
           </div>
         </div>
       )}

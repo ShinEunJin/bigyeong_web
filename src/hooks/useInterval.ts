@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
 const useInterval = (callback: () => void, delay: number) => {
   const savedCallback = useRef<typeof callback | null>(null);
