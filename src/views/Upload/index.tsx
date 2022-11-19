@@ -49,7 +49,7 @@ const Upload = () => {
 
       {imgSrc && (
         <div className="upload-input-container">
-          <Transform time={400} y={move}>
+          <Transform duration={400} x={move} timing={"ease-in-out"}>
             <div className="upload-image-box">
               <img alt="" className="upload-image" src={imgSrc} />
             </div>

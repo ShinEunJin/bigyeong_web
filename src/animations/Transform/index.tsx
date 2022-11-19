@@ -4,7 +4,9 @@ interface TransformProps {
   children: JSX.Element;
   x?: number;
   y?: number;
-  time: number;
+  z?: number;
+  duration: number;
+  timing?: string;
   delay?: number;
 }
 
@@ -12,8 +14,22 @@ const Transform = (props: TransformProps) => {
   const [style, setStyle] = useState({});
 
   useEffect(() => {
-    setStyle({ transform: `translateY(${props.y}px)`, transition: "all 0.5s" });
-  }, [props.children, props.x, props.y]);
+    setStyle({
+      transform: `
+        translate3d(
+          ${props.x || 0}px, 
+          ${props.y || 0}px, 
+          ${props.z || 0}px
+        )
+      `,
+      transition: `
+        transform 
+        ${props.duration || 500}ms 
+        ${props.timing || "linear"} 
+        ${props.delay || 0}ms
+      `,
+    });
+  }, [props.duration, props.x, props.y, props.z, props.timing, props.delay]);
 
   return <>{cloneElement(props.children, { style })}</>;
 };
