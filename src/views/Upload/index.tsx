@@ -8,6 +8,7 @@ import Transform from "@/animations/Transform";
 interface InputsType {
   title: string;
   location: string;
+  detailLocation: string;
 }
 
 const Upload = () => {
@@ -16,12 +17,16 @@ const Upload = () => {
   const [inputs, setInputs] = useState<InputsType>({
     title: "",
     location: "",
+    detailLocation: "",
   });
 
   const handleUploadPhoto = () => {
     const formData = new FormData();
     if (imgFile) formData.append("photo", imgFile);
+    formData.append("photoInfo", JSON.stringify(inputs));
     uploadPhoto(formData);
+    setInputs({ title: "", location: "", detailLocation: "" });
+    setImgSrc("");
   };
 
   const handleUpdateInput = useCallback(
@@ -30,8 +35,6 @@ const Upload = () => {
     },
     [inputs]
   );
-
-  const [move, setMove] = useState(-80);
 
   return (
     <div className="upload">
@@ -49,7 +52,7 @@ const Upload = () => {
 
       {imgSrc && (
         <div className="upload-input-container">
-          <Transform duration={400} x={move} timing={"ease-in-out"}>
+          <Transform duration={500} y={-40} timing={"ease-in-out"}>
             <div className="upload-image-box">
               <img alt="" className="upload-image" src={imgSrc} />
             </div>
@@ -68,14 +71,15 @@ const Upload = () => {
             name="location"
             placeholder="location"
           />
+          <input
+            value={inputs.detailLocation}
+            onChange={handleUpdateInput}
+            type="text"
+            name="detailLocation"
+            placeholder="detail location"
+          />
           <div className="upload-photo-btn" onClick={handleUploadPhoto}>
             <span>제출</span>
-          </div>
-          <div
-            className="upload-photo-btn"
-            onClick={() => setMove((prev) => (prev ? 0 : -80))}
-          >
-            <span>이동 테스트</span>
           </div>
         </div>
       )}

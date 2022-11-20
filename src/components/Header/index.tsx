@@ -11,6 +11,7 @@ const Header = () => {
       </Link>
       <div className="header-right">
         <Link to={`${routes.upload}`}>Upload</Link>
+        <Link to={`${routes.photos}`}>Photos</Link>
       </div>
     </header>
   );
