@@ -1,0 +1,24 @@
+button {
+  position: fixed;
+  left: 0;
+}
+
+.photos-container {
+  width: 80vw;
+  margin: 0 auto;
+  max-width: 900px;
+  padding-top: 60px;
+
+  .photos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: start;
+    column-gap: 24px;
+
+    .photos-grid__column {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: 24px;
+    }
+  }
+}
