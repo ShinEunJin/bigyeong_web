@@ -1,18 +1,7 @@
 import { GET_PHOTOS_LIMIT } from "@/constants";
 import api from "./api";
 import routes from "./routes";
-
-interface PhotoType {
-  _id: string;
-  imgUrl: string;
-  title: string;
-  writer: string | null;
-  location: string;
-  detailLocation: string;
-  view: number;
-  createdAt: string;
-  updatedAt: string;
-}
+import { PhotoType } from "@/views/Photos/types";
 
 interface GetPhotosParamsType {
   pageParam?: {

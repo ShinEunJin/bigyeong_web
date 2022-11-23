@@ -3,7 +3,8 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 
 import { getPhotos } from "@/api/photos";
 import { GET_PHOTOS_LIMIT } from "@/constants";
-import { Fragment } from "react";
+import Column from "./Column";
+import { useCallback, useEffect, useState } from "react";
 
 const Photos = () => {
   const { data, error, fetchNextPage } = useInfiniteQuery({
@@ -15,62 +16,34 @@ const Photos = () => {
     }),
   });
 
+  const onIntersect = useCallback(() => {
+    fetchNextPage();
+  }, []);
+
+  const [target, setTarget] = useState<any>(null);
+
+  useEffect(() => {
+    let observer: IntersectionObserver;
+    if (target) {
+      observer = new IntersectionObserver(onIntersect, {
+        threshold: 1,
+        rootMargin: "60px",
+      });
+      observer.observe(target);
+    }
+    return () => observer && observer.disconnect();
+  }, [target, onIntersect]);
+
   if (error) return <div>Error</div>;
 
   return (
     <div className="photos-container">
-      <button onClick={() => fetchNextPage()}>plus</button>
-
       <div className="photos-grid">
-        <div className="photos-grid__column">
-          {data?.pages.map((photos, idx) => (
-            <>
-              {photos
-                .filter((_v, idx) => idx % 3 === 0)
-                .map((photo) => (
-                  <img
-                    key={photo._id}
-                    alt=""
-                    src={photo.imgUrl}
-                    style={{ width: "100%" }}
-                  />
-                ))}
-            </>
-          ))}
-        </div>
-        <div className="photos-grid__column">
-          {data?.pages.map((photos, idx) => (
-            <>
-              {photos
-                .filter((_v, idx) => idx % 3 === 1)
-                .map((photo) => (
-                  <img
-                    key={photo._id}
-                    alt=""
-                    src={photo.imgUrl}
-                    style={{ width: "100%" }}
-                  />
-                ))}
-            </>
-          ))}
-        </div>
-        <div className="photos-grid__column">
-          {data?.pages.map((photos, idx) => (
-            <>
-              {photos
-                .filter((_v, idx) => idx % 3 === 2)
-                .map((photo) => (
-                  <img
-                    key={photo._id}
-                    alt=""
-                    src={photo.imgUrl}
-                    style={{ width: "100%" }}
-                  />
-                ))}
-            </>
-          ))}
-        </div>
+        <Column data={data?.pages} pageIdx={0} />
+        <Column data={data?.pages} pageIdx={1} />
+        <Column data={data?.pages} pageIdx={2} />
       </div>
+      <div ref={setTarget} style={{ width: "100%", height: "1px" }}></div>
     </div>
   );
 };
