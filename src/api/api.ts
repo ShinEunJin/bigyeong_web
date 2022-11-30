@@ -23,7 +23,6 @@ const api = async ({
       headers,
     });
     if (result.data) return result.data;
-    else return "result data is null";
   } catch (error) {
     return error;
   }

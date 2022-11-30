@@ -4,46 +4,48 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { getPhotos } from "@/api/photos";
 import { GET_PHOTOS_LIMIT } from "@/constants";
 import Column from "./Column";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 
 const Photos = () => {
   const { data, error, fetchNextPage } = useInfiniteQuery({
     queryKey: ["photos"],
     queryFn: getPhotos,
-    getNextPageParam: (_lastPage, pages) => ({
-      skip: pages.length * pages[0].length,
-      limit: GET_PHOTOS_LIMIT,
-    }),
+    getNextPageParam: (_lastPage, pages) => {
+      if (!_lastPage) return;
+      return {
+        skip: pages.length * pages[0].length,
+        limit: GET_PHOTOS_LIMIT,
+      };
+    },
   });
 
-  const onIntersect = useCallback(() => {
-    fetchNextPage();
-  }, []);
-
-  const [target, setTarget] = useState<any>(null);
+  const target = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     let observer: IntersectionObserver;
-    if (target) {
-      observer = new IntersectionObserver(onIntersect, {
+
+    if (target.current) {
+      observer = new IntersectionObserver(() => fetchNextPage(), {
         threshold: 1,
         rootMargin: "60px",
       });
-      observer.observe(target);
+      observer.observe(target.current);
     }
     return () => observer && observer.disconnect();
-  }, [target, onIntersect]);
+  }, [target, fetchNextPage]);
 
   if (error) return <div>Error</div>;
 
   return (
     <div className="photos-container">
-      <div className="photos-grid">
-        <Column data={data?.pages} pageIdx={0} />
-        <Column data={data?.pages} pageIdx={1} />
-        <Column data={data?.pages} pageIdx={2} />
-      </div>
-      <div ref={setTarget} style={{ width: "100%", height: "1px" }}></div>
+      {data && (
+        <div className="photos-grid">
+          <Column data={data.pages} pageIdx={0} />
+          <Column data={data.pages} pageIdx={1} />
+          <Column data={data.pages} pageIdx={2} />
+        </div>
+      )}
+      <div className="photos-addition-line" ref={target}></div>
     </div>
   );
 };
