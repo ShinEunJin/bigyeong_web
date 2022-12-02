@@ -16,12 +16,10 @@ const Column = (props: ColumnPropsType) => {
             photos
               .filter((_v, idx) => idx % 3 === props.pageIdx)
               .map((photo) => (
-                <img
-                  key={photo._id}
-                  alt=""
-                  src={photo.imgUrl}
-                  style={{ width: "100%" }}
-                />
+                <figure key={photo._id} className="photo-box">
+                  <img className="photo-box__img" alt="" src={photo.imgUrl} />
+                  <div className="photo-box__menu"></div>
+                </figure>
               ))}
         </Fragment>
       ))}

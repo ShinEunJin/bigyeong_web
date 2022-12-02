@@ -1,10 +1,10 @@
 import "./styles.scss";
+import { useEffect, useRef } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 import { getPhotos } from "@/api/photos";
 import { GET_PHOTOS_LIMIT } from "@/constants";
 import Column from "./Column";
-import { useEffect, useRef } from "react";
 
 const Photos = () => {
   const { data, error, fetchNextPage } = useInfiniteQuery({
