@@ -22,3 +22,15 @@ export const getPhotos = ({
     },
   });
 };
+
+type GetPhotoParamsType = string;
+
+export const getPhoto = (id: GetPhotoParamsType): Promise<PhotoType> => {
+  return api({
+    url: routes.photo,
+    method: "get",
+    params: {
+      id,
+    },
+  });
+};

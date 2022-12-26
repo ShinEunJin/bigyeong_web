@@ -1,14 +1,16 @@
-import "./styles.scss";
+import "./photos.scss";
 import { useEffect, useRef } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
 import { getPhotos } from "@/api/photos";
 import { GET_PHOTOS_LIMIT } from "@/constants";
 import Column from "./Column";
+import queryKeys from "@/constants/queryKeys";
+import { Outlet } from "react-router-dom";
 
 const Photos = () => {
   const { data, error, fetchNextPage } = useInfiniteQuery({
-    queryKey: ["photos"],
+    queryKey: [queryKeys.PHOTOS],
     queryFn: getPhotos,
     getNextPageParam: (_lastPage, pages) => {
       if (!_lastPage) return;
@@ -38,6 +40,7 @@ const Photos = () => {
 
   return (
     <div className="photos-container">
+      <Outlet />
       {data && (
         <div className="photos-grid">
           <Column data={data.pages} pageIdx={0} />

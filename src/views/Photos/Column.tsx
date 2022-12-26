@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import { Link } from "react-router-dom";
 
 import { PhotoType } from "./types";
 
@@ -18,7 +19,14 @@ const Column = (props: ColumnPropsType) => {
               .map((photo) => (
                 <figure key={photo._id} className="photo-box">
                   <img className="photo-box__img" alt="" src={photo.imgUrl} />
-                  <div className="photo-box__menu"></div>
+                  <div className="photo-box__menu">
+                    {/* 아이디 암호화 필요 */}
+                    <Link
+                      to={photo._id}
+                      preventScrollReset={true}
+                      state={{ isModal: true }}
+                    ></Link>
+                  </div>
                 </figure>
               ))}
         </Fragment>

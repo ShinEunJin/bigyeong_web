@@ -5,7 +5,7 @@ interface TransformProps {
   x?: number;
   y?: number;
   z?: number;
-  duration: number;
+  duration?: number;
   timing?: string;
   delay?: number;
 }
